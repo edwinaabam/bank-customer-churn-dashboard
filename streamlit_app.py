@@ -19,29 +19,6 @@ with st.sidebar:
     st.info("Use the report navigation at the bottom of the dashboard.")
     st.markdown("---")
 
-    # AI CHAT BOX (Nested inside the Sidebar)
-    st.subheader("🤖 Veritas AI Assistant")
-    
-    # Initialize chat history if it doesn't exist
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "How can I help you with your churn data today?"}]
-
-    # Create a container for the chat history inside the sidebar
-    # We use a smaller height so it fits comfortably under the logo
-    chat_container = st.container(height=400)
-    with chat_container:
-        for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-
-    # Chat input specifically for the sidebar
-    if prompt := st.chat_input("Ask a question..."):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        # Mock Response Logic
-        response = f"Analyzing '{prompt}'... Based on the dashboard, Germany's churn is highest. Would you like a breakdown?"
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        st.rerun()
-
 # 3. Custom CSS (Untouched - keeping your specific Banner style)
 st.markdown("""
     <style>
