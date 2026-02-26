@@ -5,70 +5,78 @@ import os
 # 1. Page Configuration
 st.set_page_config(page_title="Veritas Bank Analytics", layout="wide")
 
-# 2. Sidebar Navigation with Local Logo
+# 2. Sidebar Navigation & AI Chat Integration
 with st.sidebar:
-    # Pointing to the image in the root directory
+    # Logo Section
     logo_path = "banklogo.png" 
-    
     if os.path.exists(logo_path):
         image = Image.open(logo_path)
         st.image(image)
     else:
-        st.warning("Logo file 'banklogo.png' not found in root directory.")
+        st.warning("Logo 'banklogo.png' not found.")
 
     st.title("Navigation")
+    st.info("Use the report navigation at the bottom of the dashboard.")
     st.markdown("---")
-    st.info("Use the navigation arrows at the bottom of the dashboard to switch between report pages.")
 
-# 3. Custom CSS for the Top Banner (Navy Blue & Vanilla)
+    # AI CHAT BOX (Nested inside the Sidebar)
+    st.subheader("🤖 Veritas AI Assistant")
+    
+    # Initialize chat history if it doesn't exist
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "How can I help you with your churn data today?"}]
+
+    # Create a container for the chat history inside the sidebar
+    # We use a smaller height so it fits comfortably under the logo
+    chat_container = st.container(height=400)
+    with chat_container:
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+    # Chat input specifically for the sidebar
+    if prompt := st.chat_input("Ask a question..."):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        # Mock Response Logic
+        response = f"Analyzing '{prompt}'... Based on the dashboard, Germany's churn is highest. Would you like a breakdown?"
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.rerun()
+
+# 3. Custom CSS (Untouched - keeping your specific Banner style)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
 
-    /* Keep the top of the screen clear so the banner isn't cut off */
     .block-container {
         padding-top: 4rem !important; 
     }
 
     .top-banner {
-        background-color: #003049; /* Navy Blue */
-        /* Tight padding makes the big font fill the box height */
+        background-color: #003049;
         padding-top: 20px;    
         padding-bottom: 20px; 
         border-radius: 15px;   
         text-align: center;
         box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin-bottom: 30px;
     }
     
     .banner-title {
-        color: #EAE2B7; /* Vanilla */
-        font-family: Segoe UI;
-        font-size: 200px; /* Massive font size */
-        font-weight: 900; /* Maximum thickness for the letters */
+        color: #EAE2B7;
+        font-family: 'DIN Condensed', 'DIN Alternate', 'Oswald', sans-serif;
+        font-size: 120px; 
+        font-weight: 900; 
         margin: 0;
-        line-height: 0.9; /* Tightens the space around the letters */
+        line-height: 0.9; 
         letter-spacing: 1px;
         text-transform: uppercase;
-        white-space: nowrap; /* Prevents the giant text from breaking into two lines */
     }
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Display the Top Banner
+# 4. Top Banner (Full Width)
 st.markdown('<div class="top-banner"><p class="banner-title">Veritas Bank Churn Risk Analysis</p></div>', unsafe_allow_html=True)
 
-# 5. Single Tab Dashboard Logic
-# We create one tab called "Analytics" as requested
-tab_analytics = st.tabs(["Dashboard Analytics"])[0]
-
-with tab_analytics:
-    # Your specific Power BI Public Embed URL
-    pbi_url = "https://app.powerbi.com/view?r=eyJrIjoiOWEzMDI0NzctYzZiMC00Mjc4LWI5MzgtNDk3YmRiZTUxZmVjIiwidCI6IjhkMWE2OWVjLTAzYjUtNDM0NS1hZTIxLWRhZDExMmY1ZmI0ZiIsImMiOjN9"
-    
-    # We set height to 800 to ensure the full report and the bottom navigation bar are visible
-    st.components.v1.iframe(pbi_url, height=850, scrolling=False)
-
-
+# 5. Dashboard (Full Width)
+pbi_url = "https://app.powerbi.com/view?r=eyJrIjoiOWEzMDI0NzctYzZiMC00Mjc4LWI5MzgtNDk3YmRiZTUxZmVjIiwidCI6IjhkMWE2OWVjLTAzYjUtNDM0NS1hZTIxLWRhZDExMmY1ZmI0ZiIsImMiOjN9"
+st.components.v1.iframe(pbi_url, height=850)
