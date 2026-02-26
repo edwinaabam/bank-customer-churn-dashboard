@@ -12,7 +12,7 @@ with st.sidebar:
     
     if os.path.exists(logo_path):
         image = Image.open(logo_path)
-        st.image(image, use_container_width=True)
+        st.image(image)
     else:
         st.warning("Logo file 'banklogo.png' not found in root directory.")
 
@@ -23,26 +23,36 @@ with st.sidebar:
 # 3. Custom CSS for the Top Banner (Navy Blue & Vanilla)
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+
+    /* Keep the top of the screen clear so the banner isn't cut off */
+    .block-container {
+        padding-top: 4rem !important; 
+    }
+
     .top-banner {
         background-color: #003049; /* Navy Blue */
-        padding: 20px;
-        border-radius: 15px;
+        /* Tight padding makes the big font fill the box height */
+        padding-top: 20px;    
+        padding-bottom: 20px; 
+        border-radius: 15px;   
         text-align: center;
-        margin-bottom: 20px;
-        border: 2px solid #EAE2B7; /* Thin Vanilla border */
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+    
     .banner-title {
         color: #EAE2B7; /* Vanilla */
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 32px;
-        font-weight: 700;
+        font-family: Segoe UI;
+        font-size: 200px; /* Massive font size */
+        font-weight: 900; /* Maximum thickness for the letters */
         margin: 0;
+        line-height: 0.9; /* Tightens the space around the letters */
         letter-spacing: 1px;
-    }
-    /* Hide Streamlit padding for a cleaner dashboard look */
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 0rem;
+        text-transform: uppercase;
+        white-space: nowrap; /* Prevents the giant text from breaking into two lines */
     }
     </style>
     """, unsafe_allow_html=True)
@@ -60,3 +70,5 @@ with tab_analytics:
     
     # We set height to 800 to ensure the full report and the bottom navigation bar are visible
     st.components.v1.iframe(pbi_url, height=850, scrolling=False)
+
+
