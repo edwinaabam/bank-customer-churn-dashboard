@@ -4,7 +4,11 @@ import os
 import base64
 
 # 1. Page Configuration
-st.set_page_config(page_title="Veritas Bank Analytics", layout="wide")
+st.set_page_config(
+    page_title="Veritas Bank Analytics",
+    page_icon="🏦",
+    layout="wide"
+)
 
 # 2. Sidebar Navigation & AI Chat Integration
 #with st.sidebar:
