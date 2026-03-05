@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./churnboardpic.png" alt="GrandStay Operations Dashboard" width="100%">
+  <img src="./churndashboardpic.png" alt="Churn Analysis Dashboard" width="100%">
 </p>
 
 ### <a href="https://veritasbank-churn-dashboard.streamlit.app/" target="_blank" rel="noopener noreferrer">Live Churn Dashboard Link</a>
